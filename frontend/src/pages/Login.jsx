@@ -7,6 +7,8 @@ import { Eye, EyeOff } from "lucide-react";
 import Cookies from "js-cookie";
 
 function Login() {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [error, setError] = useState("");
@@ -26,7 +28,7 @@ function Login() {
     setError("");
 
     axios
-      .post("http://localhost:3000/users/login", {
+      .post(`${baseUrl}/users/login`, {
         email,
         password,
       })

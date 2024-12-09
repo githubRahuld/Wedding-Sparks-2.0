@@ -3,6 +3,7 @@ import { Circle } from "lucide-react";
 import { useEffect, useState } from "react";
 
 function VDashCard({ list }) {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
   const [status, setStatus] = useState("Pending");
 
   const bookingId = list._id;
@@ -11,7 +12,7 @@ function VDashCard({ list }) {
   // check status for booking
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/users/bookingStatus/${bookingId}`)
+      .get(`${baseUrl}/users/bookingStatus/${bookingId}`)
       .then((res) => {
         console.log("Booking id: ", bookingId, " status: ", res.data.data);
         setStatus(res.data.data);
@@ -23,7 +24,7 @@ function VDashCard({ list }) {
 
   const onAccept = () => {
     axios
-      .patch(`http://localhost:3000/users/accept/${bookingId}`)
+      .patch(`${baseUrl}/users/accept/${bookingId}`)
       .then((res) => {
         setStatus("Confirmed");
         console.log("Status changed to confirmed: ", res);
@@ -32,7 +33,7 @@ function VDashCard({ list }) {
   };
   const onReject = () => {
     axios
-      .patch(`http://localhost:3000/users/reject/${bookingId}`)
+      .patch(`${baseUrl}/users/reject/${bookingId}`)
       .then((res) => {
         setStatus("Rejected");
 

@@ -24,6 +24,8 @@ const categories = [
 ];
 
 function VenderList() {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const userEmail = useSelector((state) => state.auth.user.user.email);
 
   let countryData = Country.getAllCountries();
@@ -92,7 +94,7 @@ function VenderList() {
     });
 
     axios
-      .post("http://localhost:3000/vendors/listing", formData, {
+      .post(`${baseUrl}/vendors/listing`, formData, {
         headers: {
           "Content-Type": "multipart/form-data", // Set the correct content type
         },
@@ -107,7 +109,7 @@ function VenderList() {
         }
         // console.log(formData.getAll()); // formdata will be empty
 
-        navigate("/vendors/vDashboard");
+        navigate("/vendors/allListing");
       })
       .catch((err) => console.log("error while listing: ", err.message));
   };

@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { DashCard } from "../components";
 
 function Dashboard() {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const user = useSelector((state) => state.auth.user);
   const userEmail = user.user.email;
   // console.log(userEmail);
@@ -12,7 +14,7 @@ function Dashboard() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/users/get-booking", {
+      .get(`${baseUrl}/users/get-booking`, {
         params: { userEmail: userEmail },
       })
       .then((res) => {

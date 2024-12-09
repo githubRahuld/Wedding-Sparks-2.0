@@ -5,6 +5,8 @@ import { Form } from "react-router-dom";
 import axios from "axios";
 
 const App = () => {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
   let countryData = Country.getAllCountries();
   const [stateData, setStateData] = useState();
   const [cityData, setCityData] = useState();
@@ -39,7 +41,7 @@ const App = () => {
     e.preventDefault();
     city = city.name;
     axios
-      .post("http://localhost:3000/users/search", {
+      .post(`${baseUrl}/users/search`, {
         country,
         state,
         city,
@@ -55,7 +57,7 @@ const App = () => {
   useEffect(() => {
     if (!searchClicked) {
       axios
-        .get("http://localhost:3000/users/all-vendors")
+        .get(`${baseUrl}/users/all-vendors`)
         .then((res) => {
           console.log("List of all vendors: ", res.data);
           setVendors(res.data.data);

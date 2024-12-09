@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
 
 // Load state from local storage if available
 const initialState = localStorage.getItem("loggedInUser")
@@ -35,6 +36,8 @@ const authSlice = createSlice({
       state.userType = null;
       state.user = null;
       localStorage.removeItem("loggedInUser");
+      Cookies.remove("accessToken");
+      Cookies.remove("refreshToken");
     },
   },
 });

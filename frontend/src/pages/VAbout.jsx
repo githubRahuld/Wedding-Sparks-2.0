@@ -31,7 +31,7 @@ function VAbout() {
           </div>
           <div className="w-full md:w-1/3 mb-4">
             <img
-              src="/img/Developer/rahul.png"
+              src="/img/Developer/rahul.jpg"
               alt="Creator 3"
               className="rounded-full w-32 h-32 mx-auto mb-2"
             />

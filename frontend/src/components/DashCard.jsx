@@ -58,7 +58,7 @@ function DashCard({ list }) {
         {list.location}
       </td>
 
-      <td className={`px-7 py-2 whitespace-nowrap text-sm flex items-center `}>
+      <td className={`px-7 py-2 whitespace-nowrap text-lg flex items-center `}>
         {onlineIcon}
         {list.status}
       </td>

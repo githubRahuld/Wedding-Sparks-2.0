@@ -7,6 +7,8 @@ import { Eye, EyeOff } from "lucide-react";
 import Cookies from "js-cookie";
 
 function VenderLogin() {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [isShow, setIsShow] = useState(false);
@@ -25,7 +27,7 @@ function VenderLogin() {
     e.preventDefault();
 
     axios
-      .post("http://localhost:3000/vendors/login", {
+      .post(`${baseUrl}/vendors/login`, {
         email,
         password,
       })

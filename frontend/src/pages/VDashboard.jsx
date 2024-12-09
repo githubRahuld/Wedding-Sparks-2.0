@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { VDashCard } from "../components";
 
 function VDashboard() {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+
   const user = useSelector((state) => state.auth.user);
   const userEmail = user.user.email;
   console.log("Vendor Email ", userEmail);
@@ -12,7 +14,7 @@ function VDashboard() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/vendors/get-booking", {
+      .get(`${baseUrl}/vendors/get-booking`, {
         params: { userEmail: userEmail },
       })
       .then((res) => {
@@ -36,7 +38,6 @@ function VDashboard() {
               <thead className="text-lg text-white uppercase bg-blue-600 dark:text-white">
                 <tr>
                   <th scope="col" className="px-7 py-3 text-left">
-                   
                     Name
                   </th>
                   <th scope="col" className="px-7 py-3 text-left">

@@ -19,24 +19,27 @@ function Navbar() {
 
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     let endpoint = "";
 
     if (userType === "user") {
-      endpoint = `http://localhost:3000/users/get-user/${data.user._id}`;
+      endpoint = `${baseUrl}/users/get-user/${data.user._id}`;
     } else if (userType === "vendor") {
-      endpoint = `http://localhost:3000/vendors/get-user/${data.user._id}`;
+      endpoint = `${baseUrl}/vendors/get-user/${data.user._id}`;
     }
 
-    axios
-      .get(endpoint)
-      .then((res) => {
-        console.log("res at navbar:", res.data.data);
-        setName(res.data.data.name);
-        setAvatar(res.data.data.avatar);
-      })
-      .catch((err) => console.error(err));
+    setTimeout(() => {
+      axios
+        .get(endpoint)
+        .then((res) => {
+          console.log("res at navbar:", res?.data?.data);
+          setName(res.data.data.name);
+          setAvatar(res.data.data.avatar);
+        })
+        .catch((err) => console.error(err));
+    }, 2000);
   });
 
   console.log(name);
@@ -48,8 +51,14 @@ function Navbar() {
     try {
       const response = await axios.post(
         userType === "user"
-          ? "http://localhost:3000/users/logout"
-          : "http://localhost:3000/vendors/logout"
+          ? `${baseUrl}/users/logout`
+          : `${baseUrl}/vendors/logout`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("accessToken")}`,
+          },
+        }
       );
 
       Cookies.remove("accessToken");
