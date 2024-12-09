@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginVendor } from "../store/authSlice";
 import { Eye, EyeOff } from "lucide-react";
 import Cookies from "js-cookie";
+import { baseUrl } from "../../urls";
 
 function VenderLogin() {
   const baseUrl = import.meta.env.VITE_API_BASE_URL;

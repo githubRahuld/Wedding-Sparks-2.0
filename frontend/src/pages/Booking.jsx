@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from "../../urls";
 
 const Booking = () => {
   const navigate = useNavigate();
@@ -52,7 +53,11 @@ const Booking = () => {
 
   useEffect(() => {
     axios
+<<<<<<< HEAD
       .post(`${baseUrl}/users/search`, { _id })
+=======
+      .post(`${baseUrl}users/search`, { _id })
+>>>>>>> 00f58456e34592a3a709e20aad7503d7f1a36b33
       .then((res) => {
         setVendorName(res.data.data[0].name);
         setVendorEmail(res.data.data[0].email);

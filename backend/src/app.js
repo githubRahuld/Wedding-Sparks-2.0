@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 
 const app = express();
 
+// https://wedding-spark.vercel.app/
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { VListing } from "../components";
+import { baseUrl } from "../../urls";
 
 function VendorAllListing() {
   const baseUrl = import.meta.env.VITE_API_BASE_URL;

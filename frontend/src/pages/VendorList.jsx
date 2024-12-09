@@ -9,6 +9,7 @@ import { Button, Label } from "flowbite-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { baseUrl } from "../../urls";
 
 const categories = [
   "Venue",

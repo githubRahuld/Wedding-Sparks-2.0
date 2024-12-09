@@ -1,8 +1,8 @@
 import { City, Country, State } from "country-state-city";
 import { useEffect, useState } from "react";
 import { Card, Selector } from "../components";
-import { Form } from "react-router-dom";
 import axios from "axios";
+import { baseUrl } from "../../urls";
 
 const App = () => {
   const baseUrl = import.meta.env.VITE_API_BASE_URL;

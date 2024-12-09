@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import { HeartHandshake } from "lucide-react";
+import { baseUrl } from "../../../urls.js";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -52,6 +53,7 @@ function Navbar() {
       const response = await axios.post(
         userType === "user"
           ? `${baseUrl}/users/logout`
+<<<<<<< HEAD
           : `${baseUrl}/vendors/logout`,
         {},
         {
@@ -59,6 +61,9 @@ function Navbar() {
             Authorization: `Bearer ${Cookies.get("accessToken")}`,
           },
         }
+=======
+          : `${baseUrl}/vendors/logout`
+>>>>>>> 00f58456e34592a3a709e20aad7503d7f1a36b33
       );
 
       Cookies.remove("accessToken");

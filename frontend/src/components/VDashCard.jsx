@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Circle } from "lucide-react";
 import { useEffect, useState } from "react";
+import { baseUrl } from "../../urls";
 
 function VDashCard({ list }) {
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
