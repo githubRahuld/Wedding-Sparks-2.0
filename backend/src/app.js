@@ -9,7 +9,7 @@ dotenv.config({ path: "./.env" });
 
 // cors configuration
 const corsOptions = {
-  origin: ["https://trendy-cart-murex.vercel.app"],
+  origin: process.env.CORS_ORIGIN,
   credentials: true, 
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], 
   allowedHeaders: ["Content-Type", "Authorization"], 
