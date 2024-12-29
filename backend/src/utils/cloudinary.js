@@ -1,5 +1,4 @@
 import { v2 as cloudinary } from "cloudinary";
-import fs from "fs";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -7,23 +6,61 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const uploadOnCloudinary = async (localFilePath) => {
+import { Readable } from "stream";
+
+export const uploadOnCloudinary = async (fileBuffer, folderName = "") => {
   try {
-    if (!localFilePath) return null;
+    if (!fileBuffer) {
+      console.log("Could not find file data to upload");
+      return null;
+    }
 
-    //upload the file on cloudinary
-    const response = await cloudinary.uploader.upload(localFilePath, {
-      resource_type: "auto",
+    // Convert buffer to a readable stream
+    const bufferStream = new Readable();
+    bufferStream.push(fileBuffer);
+    bufferStream.push(null);
+
+    const response = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        {
+          resource_type: "auto", // Handles different file types (images, videos, etc.)
+          folder: folderName,
+        },
+        (error, result) => {
+          if (error) {
+            console.log("Cloudinary Upload Error:", error);
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        }
+      );
+
+      // Pipe the buffer stream to Cloudinary
+      bufferStream.pipe(uploadStream);
     });
-
-    // delete file from server
-    fs.unlinkSync(localFilePath);
 
     return response;
   } catch (error) {
-    fs.unlinkSync(localFilePath); // remove the locally saved temporary file as the upload operation got failed
+    console.log(error.message);
     return null;
   }
 };
 
-export { uploadOnCloudinary };
+export const deleteImageFromCloudinary = async (avatarUrl) => {
+  try {
+    // Extract public ID from the URL (remove the extension)
+    // Ex:- https://res.cloudinary.com/dsyy17vir/image/upload/v1729443265/products/main_images/fmd7np39law3jmk2vxfv.jpg (that is) = fmd7np39law3jmk2vxfv
+    const publicId = avatarUrl.split("/").pop().split(".")[0]; // This extracts the image name without extension
+
+    // Delete the image by its public ID
+    await cloudinary.uploader.destroy(publicId);
+
+    console.log(`Image ${publicId} successfully deleted`);
+  } catch (error) {
+    console.error("Error deleting image from Cloudinary:", error);
+    throw new ApiError(500, "Failed to delete the image");
+  }
+};
+
+export default uploadOnCloudinary;

@@ -1,79 +1,69 @@
 import mongoose, { Schema } from "mongoose";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 
-const venderRegisterSchema = new Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      trim: true,
-      lowercase: true,
-    },
-    password: {
-      type: String,
-      required: [true, "Password is required"],
-    },
-    cPassword: {
-      type: String,
-      required: [true, "Confirm Password is required"],
-    },
-    avatar: {
-      type: String,
-      required: true,
-    },
-    refreshToken: {
-      type: String,
-    },
+const ReviewSchema = new Schema({
+  customerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Auth",
+    required: true,
   },
-  { timestamps: true }
-);
-
-// incript password
-venderRegisterSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
-
-  this.password = await bcrypt.hash(this.password, 10);
-  this.cPassword = await bcrypt.hash(this.cPassword, 10);
-  next();
+  listingId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Listing",
+    required: true,
+  },
+  rating: {
+    type: Number,
+    required: true,
+    min: 1,
+    max: 5,
+  },
+  comment: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  images: {
+    type: [String],
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-//custom methods to check the password
-venderRegisterSchema.methods.isPasswordCorrect = async function (password) {
-  return await bcrypt.compare(password, this.password); //return true or false
-};
-
-// syntax:- jwt.sign(payload, secretOrPrivateKey, [options, callback])
-venderRegisterSchema.methods.generateAccessToken = function () {
-  return jwt.sign(
+const VendorDetailsSchema = new Schema({
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: "Auth",
+    required: true,
+  },
+  businessDetails: {
+    businessName: String,
+    yearsOfExperience: Number,
+    areasOfOperation: [String],
+    certifications: [String],
+  },
+  services: [
     {
-      _id: this._id,
-      name: this.name,
-      email: this.email,
+      category: String,
+      description: String,
+      price: Number,
+      images: [String],
     },
-    process.env.ACCESS_TOKEN_SECRET,
-    {
-      expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
-    }
-  );
-};
+  ],
+  policies: {
+    cancellation: String,
+    refund: String,
+    paymentTerms: String,
+  },
+  reviews: [ReviewSchema],
+  averageRating: {
+    type: Number,
+    default: 0,
+  },
 
-venderRegisterSchema.methods.generateRefreshToken = function () {
-  return jwt.sign(
-    {
-      _id: this._id,
-    },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
 
-    process.env.REFRESH_TOKEN_SECRET,
-    {
-      expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
-    }
-  );
-};
-
-export const Vregister = mongoose.model("Vregister", venderRegisterSchema);
+export const Vendor = mongoose.model("Vendor", VendorDetailsSchema);
